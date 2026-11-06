@@ -1,0 +1,22 @@
+{
+  "name": "TexFlow - UISM Team",
+  "short_name": "TexFlow",
+  "description": "Textile Buying House App - Made by Umayma Islam, UISM Team, Bangladesh",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f2043",
+  "theme_color": "#0f2043",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

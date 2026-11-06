@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TexFlow by UISM Team - Buying House Bangladesh</title>
+<meta name="description" content="TexFlow by Umayma Islam, UISM Team, Bangladesh - Textile Buying House Management">
+<style>
+*{box-sizing:border-box;font-family:Inter,Arial}body{margin:0;background:#f1f5f9}
+.topbar{background:#0f2043;color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.topbar button{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.wrap{display:flex}.sidebar{width:260px;background:#0f2043;color:#fff;min-height:100vh;padding:18px}
+.sidebar button{display:block;width:100%;text-align:left;background:none;border:0;color:#cbd5e1;padding:12px;border-radius:10px;cursor:pointer;font-size:15px}
+.sidebar button.active,.sidebar button:hover{background:#06b6d4;color:#fff}
+.main{flex:1;padding:18px}.card{background:#fff;padding:16px;border-radius:14px;box-shadow:0 2px 8px #0001;margin-bottom:14px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.cards b{font-size:26px}
+input,select,textarea{padding:10px;border:1px solid #ddd;border-radius:8px;width:100%;margin:5px 0}
+.btn{background:#06b6d4;color:#fff;border:0;padding:10px 16px;border-radius:9px;font-weight:700;cursor:pointer}
+.btn2{background:#0f2043;color:#fff;border:0;padding:10px 16px;border-radius:9px;font-weight:700;cursor:pointer}
+.btnG{background:#22c55e;color:#fff;border:0;padding:10px 16px;border-radius:9px;font-weight:700;cursor:pointer}
+table{width:100%;border-collapse:collapse}th,td{padding:9px;text-align:left;border-bottom:1px solid #eee;font-size:13px}
+.pill{padding:4px 9px;border-radius:20px;color:#fff;font-size:11px}.green{background:#22c55e}.orange{background:#f59e0b}.red{background:#ef4444}.blue{background:#06b6d4}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.hidden{display:none}#login{height:100vh;display:flex;align-items:center;justify-content:center;background:#0f2043;flex-direction:column}
+.loginbox{background:#fff;padding:28px;border-radius:18px;width:380px;text-align:center}
+.footer{text-align:center;padding:14px;font-size:12px;color:#64748b;background:#fff;margin-top:10px;border-top:1px solid #eee}
+.brand{font-size:11px;background:#06b6d4;color:#fff;padding:3px 8px;border-radius:20px}
+@media(max-width:800px){.wrap{flex-direction:column}.sidebar{width:100%;min-height:auto}.cards,.grid2,.grid3{grid-template-columns:1fr}}
+@media print{ .sidebar,.topbar,.noPrint,.footer{display:none!important} }
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+</style></head><body>
+
+<!-- LOGIN -->
+<div id="login"><div class="loginbox">
+<div class="brand">UISM TEAM • BANGLADESH</div>
+<h1 style="margin:10px 0 0">🧵 TexFlow</h1><p style="margin:5px 0">Buying House • Textile • 5 in 1 App</p>
+<p style="font-size:12px;color:#06b6d4;font-weight:700">Made by Umayma Islam</p>
+<input id="uName" placeholder="Your Name - e.g. Umayma Islam">
+<input id="uPhone" placeholder="WhatsApp - e.g. 01712345678">
+<select id="uRole"><option>Merchandiser</option><option>Admin</option><option>Factory</option><option>Buyer</option><option>QC Inspector</option></select>
+<select id="uLang"><option value="en">English</option><option value="bn">বাংলা</option></select><br><br>
+<button class="btn" style="width:100%;padding:13px" onclick="doLogin()">Login to TexFlow →</button>
+<p style="font-size:11px;color:#666">Shareable Online Version • Data saves in browser<br>For Cloud Sync, connect Firebase below</p>
+</div><p style="color:#fff;font-size:12px;margin-top:14px">© 2026 Umayma Islam • UISM Team • Bangladesh 🇧🇩</p></div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+<div class="topbar"><b>🧵 TexFlow <span style="font-size:11px;background:#06b6d4;padding:3px 8px;border-radius:20px">UISM TEAM</span></b><span id="userInfo"></span><div><button onclick="toggleLang()" id="langBtn">বাংলা</button> <button onclick="copyLink()">🔗 Copy App Link</button> <button onclick="window.print()">🖨️ PDF</button> <button onclick="logout()" style="background:#ef4444;color:#fff">Logout</button></div></div>
+<div class="wrap">
+<div class="sidebar">
+<button class="active" onclick="show('dash',this)">📊 Dashboard / Orders</button>
+<button onclick="show('cost',this)">💰 Auto Costing</button>
+<button onclick="show('fabric',this)">🧶 Fabric Library</button>
+<button onclick="show('prod',this)">🏭 Sample + Production</button>
+<button onclick="show('qc',this)">✅ QC + Shipment</button>
+<div style="background:#1e3a5f;padding:14px;border-radius:12px;margin-top:20px;font-size:13px"><b>🔔 WhatsApp Reminder</b><br>Send reminder to factory in 1 click.<br><br><button class="btn" style="width:100%" onclick="sendWhatsAppAll()">Send All via WhatsApp</button></div>
+<div style="margin-top:20px;font-size:11px;color:#94a3b8;text-align:center">Made by<br><b style="color:#fff;font-size:13px">Umayma Islam</b><br>UISM Team • Bangladesh</div>
+</div>
+
+<div class="main">
+<div id="dash">
+<div class="cards"><div class="card">Active Orders<br><b id="kpiTotal">0</b></div><div class="card">On-Time<br><b>92%</b></div><div class="card">Pending Samples<br><b>11</b></div><div class="card">Fabric Stock<br><b>1,240 m</b></div></div>
+<div class="card"><b>➕ Add New Order</b><div class="grid3">
+<input id="oId" placeholder="Order ID e.g. ORD-10300"><input id="oBuyer" placeholder="Buyer e.g. H&M"><input id="oFabric" placeholder="Fabric e.g. Denim">
+<input id="oQty" placeholder="Qty pcs" type="number"><input id="oDue" type="date"><select id="oStatus"><option>In Production</option><option>QC Pending</option><option>Ready to Ship</option><option>Delayed</option><option>Sample Pending</option></select></div>
+<input id="oFactoryPhone" placeholder="Factory WhatsApp e.g. 8801712345678">
+<button class="btn" onclick="addOrder()">Save Order</button> <button class="btn2" onclick="clearOrders()">Clear All</button> <button class="btnG" onclick="exportData()">⬇️ Export Data (Backup)</button>
+<input id="searchBox" placeholder="🔍 Search order / buyer / fabric..." oninput="renderOrders()" style="margin-top:10px">
+<div id="orderTable"></div></div>
+</div>
+
+<div id="cost" class="hidden"><div class="card"><b>💰 Auto Costing</b>
+<div class="grid3"><div>Consumption<input id="cons" value="1.8" oninput="calc()"></div><div>Fabric $/m<input id="fprice" value="2.5" oninput="calc()"></div><div>CM $/pc<input id="cm" value="1.2" oninput="calc()"></div><div>Trims $/pc<input id="trims" value="0.4" oninput="calc()"></div><div>Wash $/pc<input id="wash" value="0.5" oninput="calc()"></div><div>Overhead %<input id="oh" value="10" oninput="calc()"></div></div>
+<div style="background:#ecfeff;padding:16px;border-radius:12px;margin-top:12px"><b>Fabric: $<span id="fc">4.50</span> | Total: $<span id="tc">6.60</span> | <span style="font-size:22px;color:#0891b2">FOB: $<span id="fob">7.26</span></span></b></div><br>
+<input id="costBuyer" placeholder="Buyer Name"><button class="btn" onclick="saveCosting()">💾 Save Costing</button> <button class="btn2" onclick="window.print()">📄 PDF</button> <button class="btnG" onclick="sendWhatsAppCosting()">📱 WhatsApp</button><div id="costList" style="margin-top:12px"></div></div></div>
+
+<div id="fabric" class="hidden"><div class="card"><b>🧶 Fabric Library</b><div class="grid3"><input id="fName" placeholder="Fabric Name"><input id="fGsm" placeholder="GSM"><input id="fStock" placeholder="Stock (m)"></div><button class="btn" onclick="addFabric()">Add Fabric</button><div id="fabricTable" style="margin-top:12px"></div></div></div>
+
+<div id="prod" class="hidden"><div class="grid2">
+<div class="card"><b>Sample Approval</b><select id="sStatus"><option>Pending</option><option>Approved ✅</option><option>Rejected - Revise</option></select><textarea id="sComment" placeholder="Buyer Comment..."></textarea><button class="btn" onclick="saveSample()">Update Sample</button><div id="sampleList"></div></div>
+<div class="card"><b>Production Follow-up</b>Order: <select id="pOrder"></select><br>Today Production: <input id="todayProd" value="450"><br>Progress %: <input id="pProg" value="78" type="number"><progress id="pBar" value="78" max="100" style="width:100%"></progress><br><button class="btn" onclick="saveProd()">Save Daily Production</button><div id="prodList"></div></div>
+</div><div class="card"><b>TNA Calendar</b><br>✅ Fabric In-house &nbsp; ✅ Cutting &nbsp; 🔄 Sewing &nbsp; ⏳ QC &nbsp; 🚢 Shipment</div></div>
+
+<div id="qc" class="hidden"><div class="grid2">
+<div class="card"><b>QC Inspection - AQL 2.5</b><input id="qcOrder" placeholder="Order ID"><input id="qcDefect" placeholder="Defects"><select id="qcResult"><option>Pass ✅</option><option>Fail - Re-check ❌</option></select><button class="btn" onclick="saveQC()">Generate QC Report</button> <button class="btnG" onclick="sendWhatsAppQC()">WhatsApp QC</button><div id="qcList"></div></div>
+<div class="card"><b>Shipment</b><input id="shCarton" placeholder="Cartons"><input id="shWeight" placeholder="Net Weight"><input id="shContainer" placeholder="Container"><button class="btn" style="background:#22c55e" onclick="saveShip()">Packing List + Invoice</button><div id="shipList"></div></div>
+</div></div>
+
+<div class="footer">Made by <b>Umayma Islam</b> • <b>UISM Team</b> • Bangladesh 🇧🇩 • TexFlow - Textile Buying House Management • © 2026 All Rights Reserved</div>
+</div></div></div>
+
+<script>
+let orders=JSON.parse(localStorage.getItem('tex_orders')||'[{"id":"ORD-10284","buyer":"H&M","fabric":"Cotton Twill Navy","qty":"5000","due":"2026-11-18","status":"In Production","phone":"8801712345678"},{"id":"ORD-10279","buyer":"Zara","fabric":"Linen Blend Beige","qty":"2200","due":"2026-11-14","status":"QC Pending","phone":"8801812345678"}]');
+let fabrics=JSON.parse(localStorage.getItem('tex_fabrics')||'[{"name":"Cotton Twill Navy","gsm":"220","stock":"850"},{"name":"Denim Indigo","gsm":"340","stock":"1200"}]');
+let lang='en';
+function saveAll(){localStorage.setItem('tex_orders',JSON.stringify(orders));localStorage.setItem('tex_fabrics',JSON.stringify(fabrics));}
+function doLogin(){let n=document.getElementById('uName').value||'Umayma Islam';let r=document.getElementById('uRole').value;localStorage.setItem('tex_user',JSON.stringify({n,r}));document.getElementById('login').style.display='none';document.getElementById('app').classList.remove('hidden');document.getElementById('userInfo').innerText='👤 '+n+' • '+r+' • UISM';renderAll();}
+function logout(){localStorage.removeItem('tex_user');location.reload();}
+function show(id,btn){document.querySelectorAll('.main > div').forEach(d=>{if(d.id) d.classList.add('hidden')});document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.sidebar button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function toggleLang(){lang=lang=='en'?'bn':'en';document.getElementById('langBtn').innerText=lang=='en'?'বাংলা':'English';alert(lang=='en'?'Language: English':'ভাষা: বাংলা - UISM Team');}
+function copyLink(){let link=window.location.href;navigator.clipboard.writeText(link);alert('App Link Copied! Share it:\n'+link+'\n\nMade by Umayma Islam, UISM Team');}
+function exportData(){let data=JSON.stringify({orders,fabrics,by:'Umayma Islam - UISM Team Bangladesh'},null,2);let b=new Blob([data],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='texflow-uism-backup.json';a.click();}
+function addOrder(){let o={id:document.getElementById('oId').value||'ORD-'+Math.floor(Math.random()*90000+10000),buyer:document.getElementById('oBuyer').value||'Buyer',fabric:document.getElementById('oFabric').value||'Fabric',qty:document.getElementById('oQty').value||'1000',due:document.getElementById('oDue').value||'2026-11-20',status:document.getElementById('oStatus').value,phone:document.getElementById('oFactoryPhone').value||'8801712345678'};orders.unshift(o);saveAll();renderAll();alert('Order Saved! ✅ - UISM Team');}
+function clearOrders(){if(confirm('Clear all?')){orders=[];saveAll();renderAll();}}
+function renderOrders(){let q=(document.getElementById('searchBox').value||'').toLowerCase();let f=orders.filter(o=>(o.id+o.buyer+o.fabric).toLowerCase().includes(q));let color={'In Production':'blue','QC Pending':'orange','Ready to Ship':'green','Delayed':'red','Sample Pending':'orange'};let h='<table><tr><th>Order</th><th>Buyer</th><th>Fabric</th><th>Qty</th><th>Due</th><th>Status</th><th>Action</th></tr>';f.forEach((o)=>{h+=`<tr><td>${o.id}</td><td>${o.buyer}</td><td>${o.fabric}</td><td>${o.qty}</td><td>${o.due}</td><td><span class="pill ${color[o.status]||'blue'}">${o.status}</span></td><td><button onclick="sendWhatsAppOne(${orders.indexOf(o)})">📱 WhatsApp</button> <button onclick="delOrder(${orders.indexOf(o)})">🗑️</button></td></tr>`});h+='</table>';document.getElementById('orderTable').innerHTML=h;document.getElementById('kpiTotal').innerText=orders.length;document.getElementById('pOrder').innerHTML=orders.map(o=>`<option>${o.id} - ${o.buyer}</option>`).join('');}
+function delOrder(i){orders.splice(i,1);saveAll();renderAll();}
+function calc(){let c=+document.getElementById('cons').value||0,f=+document.getElementById('fprice').value||0,cm=+document.getElementById('cm').value||0,t=+document.getElementById('trims').value||0,w=+document.getElementById('wash').value||0,oh=+document.getElementById('oh').value||0;let fc=c*f,total=fc+cm+t+w,fob=total*(1+oh/100);document.getElementById('fc').innerText=fc.toFixed(2);document.getElementById('tc').innerText=total.toFixed(2);document.getElementById('fob').innerText=fob.toFixed(2);}
+function saveCosting(){let c=JSON.parse(localStorage.getItem('tex_cost')||'[]');c.unshift({buyer:document.getElementById('costBuyer').value||'Buyer',fob:document.getElementById('fob').innerText,date:new Date().toLocaleDateString()});localStorage.setItem('tex_cost',JSON.stringify(c));renderCost();alert('Costing Saved ✅');}
+function renderCost(){let c=JSON.parse(localStorage.getItem('tex_cost')||'[]');document.getElementById('costList').innerHTML=c.map(x=>`• ${x.buyer} - FOB $${x.fob} - ${x.date}<br>`).join('');}
+function addFabric(){fabrics.unshift({name:document.getElementById('fName').value||'New Fabric',gsm:document.getElementById('fGsm').value||'180',stock:document.getElementById('fStock').value||'500'});saveAll();renderFabric();}
+function renderFabric(){document.getElementById('fabricTable').innerHTML='<table><tr><th>Fabric</th><th>GSM</th><th>Stock</th><th>Action</th></tr>'+fabrics.map((f,i)=>`<tr><td>${f.name}</td><td>${f.gsm}</td><td>${f.stock} m ${f.stock<200?'<b style="color:red">LOW</b>':''}</td><td><button onclick="fabrics.splice(${i},1);saveAll();renderFabric()">Delete</button></td></tr>`).join('')+'</table>';}
+function saveSample(){document.getElementById('sampleList').innerHTML+='• '+document.getElementById('sStatus').value+' - '+document.getElementById('sComment').value+'<br>';alert('Sample Updated');}
+function saveProd(){document.getElementById('pBar').value=document.getElementById('pProg').value;document.getElementById('prodList').innerHTML+='• '+document.getElementById('pOrder').value+' - '+document.getElementById('todayProd').value+' pcs - '+document.getElementById('pProg').value+'%<br>';alert('Production Saved ✅');}
+function saveQC(){document.getElementById('qcList').innerHTML+='• '+document.getElementById('qcOrder').value+' - '+document.getElementById('qcResult').value+'<br>';alert('QC Report Generated ✅');}
+function saveShip(){document.getElementById('shipList').innerHTML+='• Cartons: '+document.getElementById('shCarton').value+' | Weight: '+document.getElementById('shWeight').value+'<br>';alert('Packing List Generated ✅');}
+function sendWhatsAppOne(i){let o=orders[i];let msg=encodeURIComponent(`Hello from TexFlow - UISM Team 🇧🇩\nMade by Umayma Islam\nOrder ${o.id} - ${o.buyer} - ${o.fabric} - Qty ${o.qty}\nDue: ${o.due} - Status: ${o.status}\nPlease update.`);window.open(`https://wa.me/${o.phone}?text=${msg}`,'_blank');}
+function sendWhatsAppAll(){orders.forEach((o,i)=>{setTimeout(()=>sendWhatsAppOne(i),i*800)});alert('Sending WhatsApp to all factories...');}
+function sendWhatsAppCosting(){let msg=encodeURIComponent(`Costing - TexFlow by Umayma Islam, UISM Team\nBuyer: ${document.getElementById('costBuyer').value}\nFOB: $${document.getElementById('fob').innerText}`);window.open(`https://wa.me/8801712345678?text=${msg}`,'_blank');}
+function sendWhatsAppQC(){let msg=encodeURIComponent(`QC Report - TexFlow UISM\nOrder: ${document.getElementById('qcOrder').value}\nResult: ${document.getElementById('qcResult').value}`);window.open(`https://wa.me/8801712345678?text=${msg}`,'_blank');}
+function renderAll(){renderOrders();renderFabric();renderCost();calc();}
+let savedUser=JSON.parse(localStorage.getItem('tex_user')||'null');if(savedUser){document.getElementById('login').style.display='none';document.getElementById('app').classList.remove('hidden');document.getElementById('userInfo').innerText='👤 '+savedUser.n+' • '+savedUser.r+' • UISM';}
+renderAll();
+</script></body></html>
